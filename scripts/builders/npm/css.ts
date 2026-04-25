@@ -12,7 +12,13 @@ const template = flavorEntries
           sprintf("  %s: %s;", name, hex),
           sprintf("  %s-rgb: %d %d %d;", name, ...Object.values(rgb)),
           sprintf("  %s-hsl: %.3f %.3f%% %.3f%%;", name, h, s * 100, l * 100),
-          sprintf("  %s-oklch: %.4f %.4f %.4f;", name, oklch.l, oklch.c, oklch.h),
+          sprintf(
+            "  %s-oklch: %.4f %.4f %.4f;",
+            name,
+            oklch.l,
+            oklch.c,
+            oklch.h,
+          ),
         ].join("\n");
       })
       .join("\n");
@@ -20,8 +26,9 @@ const template = flavorEntries
     const ansiColors = ansiColorEntries.map(
       ([ansiColorName, { normal, bright }]) => {
         return [normal, bright].map((group) => {
-          const name =
-            `--ctp-${flavorName}-ansi-${group.name.toLowerCase()}-${ansiColorName}`;
+          const name = `--ctp-${flavorName}-ansi-${
+            group.name.includes("Bright") ? "bright" : "normal"
+          }-${ansiColorName}`;
           return sprintf("  %s: %s;", name, group.hex);
         }).join("\n");
       },
